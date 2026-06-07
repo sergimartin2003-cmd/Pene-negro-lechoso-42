@@ -20,18 +20,56 @@ async function PlayerData({ game, name, tag, region }: { game: string; name: str
     const player = response.data;
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-5">
         <PlayerHeader player={player} />
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-4">
-            <StatsGrid stats={player.stats} />
+
+        {/* Tab bar — visual only for now */}
+        <div className="flex gap-1 border-b border-zinc-800 pb-0">
+          {['Overview', 'Matches', 'Stats'].map((tab, i) => (
+            <button
+              key={tab}
+              type="button"
+              className={
+                i === 0
+                  ? 'relative px-4 py-2.5 text-sm font-semibold text-white after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-accent after:rounded-full'
+                  : 'px-4 py-2.5 text-sm font-medium text-zinc-500 hover:text-zinc-300 transition-colors'
+              }
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Content grid */}
+        <div className="grid gap-5 lg:grid-cols-3">
+          {/* Left: stats + matches */}
+          <div className="lg:col-span-2 space-y-5">
             <div>
-              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">Recent Matches</h2>
+              <h2 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600">
+                <span className="h-px flex-1 bg-zinc-800" />
+                Performance
+                <span className="h-px flex-1 bg-zinc-800" />
+              </h2>
+              <StatsGrid stats={player.stats} />
+            </div>
+
+            <div>
+              <h2 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600">
+                <span className="h-px flex-1 bg-zinc-800" />
+                Recent Matches
+                <span className="h-px flex-1 bg-zinc-800" />
+              </h2>
               <MatchHistoryList matches={player.recentMatches} />
             </div>
           </div>
-          <div>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">Rank</h2>
+
+          {/* Right: rank */}
+          <div className="space-y-4">
+            <h2 className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600">
+              <span className="h-px flex-1 bg-zinc-800" />
+              Rank
+              <span className="h-px flex-1 bg-zinc-800" />
+            </h2>
             <RankCard rank={player.rank} />
           </div>
         </div>
@@ -45,10 +83,10 @@ async function PlayerData({ game, name, tag, region }: { game: string; name: str
 
 export default function PlayerPage({ params, searchParams }: Props) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-grid">
       <Navbar />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <Suspense fallback={<LoadingSpinner className="py-20" />}>
+        <Suspense fallback={<LoadingSpinner className="py-24" />}>
           <PlayerData
             game={params.game}
             name={decodeURIComponent(params.name)}
