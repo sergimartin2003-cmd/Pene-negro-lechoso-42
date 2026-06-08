@@ -55,6 +55,31 @@ export type GameConfig = {
   tagPlaceholder?: string;
 };
 
+export interface Tournament {
+  id: string;
+  title: string;
+  description: string | null;
+  game_id: string;
+  entry_fee: number;
+  prize_pool: number;
+  currency: string;
+  max_players: number;
+  current_players: number;
+  status: 'open' | 'full' | 'in_progress' | 'finished' | 'cancelled';
+  starts_at: string;
+  ends_at: string | null;
+  rules: string | null;
+  created_at: string;
+  participants?: TournamentParticipant[];
+}
+
+export interface TournamentParticipant {
+  display_name: string;
+  game_username: string;
+  joined_at: string;
+  placement: number | null;
+}
+
 export const SUPPORTED_GAMES: GameConfig[] = [
   {
     id: 'valorant',

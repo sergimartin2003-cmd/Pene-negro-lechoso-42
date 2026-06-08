@@ -5,6 +5,7 @@ import rateLimit from '@fastify/rate-limit';
 import { redis } from './cache/redis';
 import { db } from './db/client';
 import { searchRoutes } from './routes/search.route';
+import { tournamentRoutes } from './routes/tournaments.route';
 import { config } from './config';
 
 const app = Fastify({ logger: { level: config.NODE_ENV === 'development' ? 'info' : 'warn' } });
@@ -21,6 +22,7 @@ async function bootstrap() {
   }));
 
   await app.register(searchRoutes, { prefix: '/api/v1' });
+  await app.register(tournamentRoutes, { prefix: '/api/v1' });
 
   await redis.connect();
   await app.listen({ port: config.PORT, host: '0.0.0.0' });
