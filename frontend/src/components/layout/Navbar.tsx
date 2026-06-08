@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Search, BarChart3, User } from 'lucide-react';
+import { Search, BarChart3, User, Trophy } from 'lucide-react';
 
 export function Navbar() {
   return (
@@ -23,6 +23,13 @@ export function Navbar() {
           >
             <Search className="h-3.5 w-3.5" />
             Search
+          </Link>
+          <Link
+            href="/tournaments"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-all duration-200"
+          >
+            <Trophy className="h-3.5 w-3.5" />
+            Tournaments
           </Link>
           <Link
             href="/profile"

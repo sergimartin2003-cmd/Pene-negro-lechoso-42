@@ -9,7 +9,7 @@ const ERROR_MESSAGES: Record<string, { title: string; hint: string }> = {
 };
 
 export function ErrorCard({ code, message }: { code?: string; message?: string }) {
-  const info = (code && ERROR_MESSAGES[code]) ?? { title: 'Error', hint: message ?? 'An unknown error occurred.' };
+  const info: { title: string; hint: string } = (code && ERROR_MESSAGES[code]) || { title: 'Error', hint: message ?? 'An unknown error occurred.' };
 
   return (
     <div className="mx-auto max-w-md py-16">

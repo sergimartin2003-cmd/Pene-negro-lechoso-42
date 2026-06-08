@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { Zap, Layers, RefreshCw } from 'lucide-react';
+import { Zap, Layers, RefreshCw, Trophy } from 'lucide-react';
 
 const FEATURE_CARDS = [
   {
@@ -123,6 +124,25 @@ export default function HomePage() {
                 <p className="text-sm leading-relaxed text-zinc-500">{description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tournaments teaser */}
+      <section className="relative z-10 border-t border-zinc-800/50 bg-zinc-950/60 px-4 py-8">
+        <div className="mx-auto max-w-5xl flex justify-center">
+          <div className="w-full max-w-2xl rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-5 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Trophy className="h-8 w-8 text-yellow-400 shrink-0" />
+              <div>
+                <p className="font-bold text-white text-sm">Tournaments with prize pools</p>
+                <p className="text-xs text-muted">Join or create tournaments. Entry fees build the prize pool.</p>
+              </div>
+            </div>
+            <Link href="/tournaments"
+              className="shrink-0 rounded-lg border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-2 transition-colors">
+              View All
+            </Link>
           </div>
         </div>
       </section>
