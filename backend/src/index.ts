@@ -15,9 +15,11 @@ const app = Fastify({ logger: { level: config.NODE_ENV === 'development' ? 'info
 
 async function bootstrap() {
   await app.register(helmet);
-  const allowedOrigins = process.env.FRONTEND_URL
-    ? [process.env.FRONTEND_URL, 'http://localhost:3000']
-    : ['http://localhost:3000'];
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'https://bjodbuqvpene-negro-lechoso-42.vercel.app',
+    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+  ];
   await app.register(cors, { origin: allowedOrigins, credentials: true });
   await app.register(rateLimit, { max: 60, timeWindow: '1 minute' });
   await app.register(fjwt, { secret: config.JWT_SECRET });
