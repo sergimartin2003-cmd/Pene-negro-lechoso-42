@@ -1,4 +1,4 @@
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { db } from '../db/client';
 
@@ -9,7 +9,7 @@ const linkSchema = z.object({
   region: z.string().optional(),
 });
 
-async function verifyJwt(request: Parameters<Parameters<FastifyInstance['get']>[1]>[0], reply: Parameters<Parameters<FastifyInstance['get']>[1]>[1]) {
+async function verifyJwt(request: FastifyRequest, reply: FastifyReply) {
   try {
     await request.jwtVerify();
   } catch {
@@ -18,7 +18,6 @@ async function verifyJwt(request: Parameters<Parameters<FastifyInstance['get']>[
 }
 
 export async function profileRoutes(app: FastifyInstance) {
-  // Get my linked accounts
   app.get('/profile/accounts', { onRequest: [verifyJwt] }, async (request, reply) => {
     const user = request.user as { id: string };
     const result = await db.query(
@@ -28,7 +27,6 @@ export async function profileRoutes(app: FastifyInstance) {
     return reply.send({ data: result.rows });
   });
 
-  // Link a new account
   app.post('/profile/accounts', { onRequest: [verifyJwt] }, async (request, reply) => {
     const user = request.user as { id: string };
     const body = linkSchema.safeParse(request.body);
@@ -36,7 +34,6 @@ export async function profileRoutes(app: FastifyInstance) {
 
     const { game_id, external_id, display_name, region } = body.data;
 
-    // Check duplicate
     const exists = await db.query(
       'SELECT id FROM linked_accounts WHERE game_id = $1 AND external_id = $2',
       [game_id, external_id]
@@ -54,7 +51,6 @@ export async function profileRoutes(app: FastifyInstance) {
     return reply.status(201).send({ data: result.rows[0] });
   });
 
-  // Unlink an account
   app.delete('/profile/accounts/:id', { onRequest: [verifyJwt] }, async (request, reply) => {
     const user = request.user as { id: string };
     const { id } = request.params as { id: string };
