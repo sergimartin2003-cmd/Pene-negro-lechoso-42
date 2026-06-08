@@ -80,6 +80,16 @@ export interface TournamentParticipant {
   placement: number | null;
 }
 
+export interface LinkedAccount {
+  id: string;
+  game_id: string;
+  display_name: string;
+  external_id: string;
+  region: string | null;
+  is_verified: boolean;
+  linked_at: string;
+}
+
 export const SUPPORTED_GAMES: GameConfig[] = [
   {
     id: 'valorant',

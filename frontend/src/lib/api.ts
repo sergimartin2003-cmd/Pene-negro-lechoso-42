@@ -1,4 +1,4 @@
-import type { SearchResponse, Tournament, TournamentParticipant } from '@/types';
+import type { SearchResponse, Tournament, TournamentParticipant, LinkedAccount } from '@/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
 
@@ -58,4 +58,34 @@ export async function createTournament(data: {
   });
   if (!res.ok) throw new Error('Failed to create tournament');
   return res.json();
+}
+
+export async function getLinkedAccounts(token: string): Promise<{ data: LinkedAccount[] }> {
+  const res = await fetch(`${API_BASE}/profile/accounts`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to fetch accounts');
+  return res.json();
+}
+
+export async function linkAccount(token: string, data: {
+  game_id: string; external_id: string; display_name: string; region?: string;
+}): Promise<{ data: LinkedAccount }> {
+  const res = await fetch(`${API_BASE}/profile/accounts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw Object.assign(new Error(err.error ?? 'Failed to link account'), { code: err.code });
+  }
+  return res.json();
+}
+
+export async function unlinkAccount(token: string, id: string): Promise<void> {
+  await fetch(`${API_BASE}/profile/accounts/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

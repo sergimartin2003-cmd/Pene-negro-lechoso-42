@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Trophy, User, LogOut, LogIn } from 'lucide-react';
+import { Trophy, User, LogOut, LogIn, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export function Navbar() {
@@ -18,6 +18,9 @@ export function Navbar() {
           <Link href="/" className="hover:text-white transition-colors">Search</Link>
           <Link href="/tournaments" className="flex items-center gap-1.5 hover:text-white transition-colors">
             <Trophy className="h-3.5 w-3.5" /> Tournaments
+          </Link>
+          <Link href="/leaderboard" className="flex items-center gap-1.5 hover:text-white transition-colors">
+            <TrendingUp className="h-3.5 w-3.5" /> Leaderboard
           </Link>
           {user ? (
             <>
